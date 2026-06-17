@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOVAKINGS PARFUMS | Perfumes Originales y Decants Premium</title>
+<meta name="description" content="Descubre perfumes originales, decants premium y atención personalizada. Si no encuentras tu fragancia ideal, nosotros la conseguimos.">
+<meta name="keywords" content="perfumes originales, decants, perfumería, perfumes hombre, perfumes mujer, fragancias premium, NOVAKINGS">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ─── RESET & BASE ─── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --black:    #0A0A0A;
+    --gold:     #D4AF37;
+    --gold-light: #E8C96A;
+    --gold-dim: rgba(212,175,55,0.15);
+    --white:    #FFFFFF;
+    --gray-dark:#171717;
+    --gray-mid: #2B2B2B;
+    --gray-text:#9A9A9A;
+    --ease-silk: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --ease-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    cursor: none;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; }
+  a { text-decoration: none; color: inherit; }
+
+  /* ─── CURSOR ─── */
+  #cursor-dot {
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.25s var(--ease-silk), height 0.25s var(--ease-silk), background 0.25s;
+  }
+  #cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(212,175,55,0.5);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s var(--ease-silk), height 0.4s var(--ease-silk), border-color 0.3s;
+  }
+  body:has(a:hover) #cursor-dot,
+  body:has(button:hover) #cursor-dot { width: 12px; height: 12px; background: var(--gold-light); }
+  body:has(a:hover) #cursor-ring,
+  body:has(button:hover) #cursor-ring { width: 52px; height: 52px; border-color: var(--gold); }
+
+  /* ─── UTILITY ─── */
+  .container { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+  .eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    line-height: 1.15;
+  }
+  .gold-line {
+    width: 48px; height: 1px;
+    background: var(--gold);
+    margin: 24px 0 32px;
+  }
+  .gold-line.centered { margin-left: auto; margin-right: auto; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 32px;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border: none; cursor: none;
+    transition: all 0.4s var(--ease-silk);
+    position: relative;
+    overflow: hidden;
+  }
+  .btn::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(255,255,255,0.07);
+    transform: translateX(-100%);
+    transition: transform 0.5s var(--ease-expo);
+  }
+  .btn:hover::before { transform: translateX(0); }
+  .btn-gold { background: var(--gold); color: var(--black); }
+  .btn-gold:hover { background: var(--gold-light); }
+  .btn-outline { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,0.3); }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+  .btn-wa { background: #25D366; color: #fff; }
+  .btn-wa:hover { background: #1ebe5d; }
+
+  /* ─── SCROLL ANIMATIONS ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s var(--ease-expo), transform 0.8s var(--ease-expo);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+  .reveal-delay-6 { transition-delay: 0.6s; }
+
+  /* ─── NAVBAR ─── */
+  #navbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    padding: 20px 0;
+    transition: all 0.6s var(--ease-silk);
+  }
+  #navbar.scrolled {
+    background: rgba(10,10,10,0.82);
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    border-bottom: 1px solid rgba(212,175,55,0.12);
+    padding: 14px 0;
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px;
+  }
+  .nav-logo {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+  .nav-logo span { color: var(--white); }
+  .nav-links {
+    display: flex; align-items: center; gap: 36px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-family: 'Cinzel', serif;
+    color: rgba(255,255,255,0.7);
+    transition: color 0.3s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -4px; left: 0; right: 0;
+    height: 1px; background: var(--gold);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.4s var(--ease-silk);
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  .nav-wa-btn {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 20px;
+    background: transparent;
+    border: 1px solid var(--gold);
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    cursor: none;
+    transition: all 0.4s var(--ease-silk);
+    white-space: nowrap;
+  }
+  .nav-wa-btn:hover { background: var(--gold); color: var(--black); }
+  .hamburger {
+    display: none;
+    flex-direction: column; gap: 5px;
+    cursor: none; background: none; border: none; padding: 4px;
+  }
+  .hamburger span { display: block; width: 22px; height: 1px; background: var(--white); transition: all 0.3s; }
+  .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+  /* mobile nav */
+  .mobile-menu {
+    display: none;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 999;
+    background: rgba(10,10,10,0.97);
+    backdrop-filter: blur(20px);
+    flex-direction: column; align-items: center; justify-content: center;
+    gap: 40px;
+    opacity: 0; transform: translateY(-20px);
+    transition: opacity 0.4s, transform 0.4s var(--ease-silk);
+    pointer-events: none;
+  }
+  .mobile-menu.open { display: flex; opacity: 1; transform: translateY(0); pointer-events: all; }
+  .mobile-menu a {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    letter-spacing: 0.2em;
+    color: var(--white);
+    transition: color 0.3s;
+  }
+  .mobile-menu a:hover { color: var(--gold); }
+
+  /* ─── HERO ─── */
+  #hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 70% at 70% 40%, rgba(212,175,55,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 80% 60% at 20% 80%, rgba(212,175,55,0.04) 0%, transparent 70%),
+      linear-gradient(160deg, #0A0A0A 0%, #171717 50%, #0A0A0A 100%);
+  }
+  /* Fragrance bottle silhouette via CSS */
+  .hero-bottle {
+    position: absolute;
+    right: 8%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: min(320px, 38vw);
+    aspect-ratio: 0.45;
+    opacity: 0.18;
+    background: linear-gradient(160deg, #D4AF37 0%, #8B7419 40%, #D4AF37 60%, #6B5A15 100%);
+    clip-path: polygon(
+      38% 0%, 62% 0%,
+      65% 12%, 72% 14%, 72% 18%, 65% 20%,
+      68% 24%, 68% 96%,
+      62% 100%, 38% 100%,
+      32% 96%, 32% 24%,
+      35% 20%, 28% 18%, 28% 14%, 35% 12%
+    );
+    filter: blur(1px);
+  }
+  .hero-particles { position: absolute; inset: 0; pointer-events: none; }
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: 0;
+    animation: float-particle linear infinite;
+  }
+  @keyframes float-particle {
+    0%   { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 0.6; }
+    100% { transform: translateY(-120px) translateX(var(--dx, 20px)) scale(0.4); opacity: 0; }
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    text-align: center;
+    padding: 80px 24px;
+    max-width: 820px;
+  }
+  .hero-pretitle {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0;
+    animation: fadeUp 1s var(--ease-expo) 0.3s forwards;
+  }
+  .hero-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(36px, 6.5vw, 84px);
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: 0.03em;
+    margin-top: 20px;
+    opacity: 0;
+    animation: fadeUp 1s var(--ease-expo) 0.55s forwards;
+  }
+  .hero-title em {
+    font-style: normal;
+    background: linear-gradient(135deg, #D4AF37 0%, #F0D060 40%, #A88A20 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: clamp(14px, 1.5vw, 17px);
+    color: rgba(255,255,255,0.55);
+    margin-top: 24px;
+    letter-spacing: 0.05em;
+    line-height: 1.8;
+    opacity: 0;
+    animation: fadeUp 1s var(--ease-expo) 0.75s forwards;
+  }
+  .hero-divider {
+    width: 1px; height: 60px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    margin: 40px auto;
+    opacity: 0;
+    animation: fadeIn 1s var(--ease-expo) 0.9s forwards;
+  }
+  .hero-btns {
+    display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 1s var(--ease-expo) 1.05s forwards;
+  }
+  .hero-scroll {
+    position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    z-index: 2; opacity: 0;
+    animation: fadeIn 1s var(--ease-expo) 1.4s forwards;
+  }
+  .hero-scroll span {
+    font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: rgba(255,255,255,0.35); font-family: 'Cinzel', serif;
+  }
+  .scroll-line {
+    width: 1px; height: 48px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scroll-pulse 2s ease-in-out infinite;
+  }
+  @keyframes scroll-pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; } to { opacity: 1; }
+  }
+
+  /* ─── CATEGORIES ─── */
+  #categorias { padding: 120px 0; }
+  .categories-header { text-align: center; margin-bottom: 64px; }
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(212,175,55,0.1);
+    border: 1px solid rgba(212,175,55,0.1);
+  }
+  .cat-card {
+    background: var(--gray-dark);
+    padding: 48px 32px;
+    text-align: center;
+    cursor: none;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.5s var(--ease-silk);
+  }
+  .cat-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--gold-dim) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.5s var(--ease-silk);
+  }
+  .cat-card:hover::before { opacity: 1; }
+  .cat-card:hover { background: #1a1a1a; }
+  .cat-icon {
+    font-size: 36px; margin-bottom: 20px;
+    display: block;
+    filter: grayscale(1) brightness(0.7);
+    transition: filter 0.4s;
+  }
+  .cat-card:hover .cat-icon { filter: none; }
+  .cat-name {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.75);
+    transition: color 0.4s;
+  }
+  .cat-card:hover .cat-name { color: var(--gold); }
+  .cat-border-bottom {
+    position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 0; height: 2px; background: var(--gold);
+    transition: width 0.5s var(--ease-expo);
+  }
+  .cat-card:hover .cat-border-bottom { width: 100%; }
+
+  /* ─── PRODUCTS ─── */
+  #productos { padding: 120px 0; background: var(--gray-dark); }
+  .products-header { margin-bottom: 64px; }
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(212,175,55,0.08);
+  }
+  .product-card {
+    background: var(--black);
+    cursor: none;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s;
+    display: flex; flex-direction: column;
+  }
+  .product-card:hover { background: #0f0f0f; }
+  .product-img {
+    aspect-ratio: 1;
+    background: var(--gray-mid);
+    position: relative;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  /* Elegant perfume placeholder */
+  .product-img::before {
+    content: '';
+    width: 55%;
+    aspect-ratio: 0.48;
+    background: linear-gradient(160deg, #3a3a3a 0%, #2B2B2B 50%, #3a3a3a 100%);
+    clip-path: polygon(
+      38% 0%, 62% 0%,
+      65% 10%, 70% 12%, 70% 16%, 65% 18%,
+      67% 22%, 67% 95%,
+      60% 100%, 40% 100%,
+      33% 95%, 33% 22%,
+      35% 18%, 30% 16%, 30% 12%, 35% 10%
+    );
+    transition: transform 0.6s var(--ease-expo);
+  }
+  .product-card:hover .product-img::before { transform: scale(1.04) translateY(-3px); }
+  .product-img::after {
+    content: attr(data-initial);
+    position: absolute;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: rgba(212,175,55,0.5);
+    bottom: 14px; right: 14px;
+  }
+  .product-gold-line {
+    position: absolute; bottom: 0; left: 0;
+    width: 0; height: 2px; background: var(--gold);
+    transition: width 0.6s var(--ease-expo);
+  }
+  .product-card:hover .product-gold-line { width: 100%; }
+  .product-info { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+  .product-brand {
+    font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 8px; font-family: 'Cinzel', serif;
+  }
+  .product-name {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    line-height: 1.3;
+    margin-bottom: 12px;
+    color: var(--white);
+  }
+  .product-price {
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.05em;
+    margin-top: auto;
+    margin-bottom: 16px;
+  }
+  .product-wa-btn {
+    width: 100%;
+    padding: 11px;
+    background: transparent;
+    border: 1px solid rgba(212,175,55,0.25);
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    cursor: none;
+    transition: all 0.4s var(--ease-silk);
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .product-wa-btn:hover { background: var(--gold); color: var(--black); border-color: var(--gold); }
+
+  /* ─── DECANTS ─── */
+  #decants { padding: 120px 0; }
+  .decants-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .decant-visual {
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 480px;
+  }
+  /* Large bottle */
+  .bottle-large {
+    width: 120px;
+    aspect-ratio: 0.42;
+    background: linear-gradient(160deg, #D4AF37 0%, #8B7419 35%, #C9A830 60%, #7A6520 100%);
+    clip-path: polygon(
+      35% 0%, 65% 0%,
+      68% 11%, 74% 13%, 74% 17%, 68% 19%,
+      70% 23%, 70% 95%,
+      63% 100%, 37% 100%,
+      30% 95%, 30% 23%,
+      32% 19%, 26% 17%, 26% 13%, 32% 11%
+    );
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-60%, -50%);
+    filter: drop-shadow(0 20px 60px rgba(212,175,55,0.3));
+    animation: bottle-breathe 4s ease-in-out infinite;
+  }
+  @keyframes bottle-breathe {
+    0%, 100% { transform: translate(-60%, -50%); }
+    50% { transform: translate(-60%, -54%); }
+  }
+  /* Small decant vials */
+  .vial {
+    width: 38px;
+    aspect-ratio: 0.32;
+    position: absolute;
+    animation: bottle-breathe 4s ease-in-out infinite;
+  }
+  .vial:nth-child(2) { animation-delay: 0.5s; }
+  .vial:nth-child(3) { animation-delay: 1s; }
+  .vial-body {
+    width: 100%; height: 100%;
+    background: linear-gradient(160deg, rgba(212,175,55,0.6) 0%, rgba(139,116,25,0.6) 50%, rgba(212,175,55,0.4) 100%);
+    clip-path: polygon(30% 0%, 70% 0%, 80% 8%, 80% 96%, 70% 100%, 30% 100%, 20% 96%, 20% 8%);
+  }
+  .vial-1 { right: 30%; top: 50%; transform: translateY(-60%); }
+  .vial-2 { right: 18%; top: 50%; transform: translateY(-40%); }
+  .vial-3 { right: 8%; top: 50%; transform: translateY(-65%); }
+  /* Arrow flow */
+  .decant-arrow {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(10px, -50%);
+    display: flex; flex-direction: column; align-items: center;
+    gap: 4px;
+    opacity: 0.5;
+  }
+  .decant-arrow span {
+    display: block; width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    height: 30px;
+    animation: arrow-pulse 1.5s ease-in-out infinite;
+  }
+  .decant-arrow .arr { font-size: 10px; color: var(--gold); animation: arrow-pulse 1.5s ease-in-out infinite; }
+  @keyframes arrow-pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+  .decant-steps { margin: 32px 0; }
+  .decant-step {
+    display: flex; align-items: flex-start; gap: 20px;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    opacity: 0.85;
+    transition: opacity 0.3s;
+  }
+  .decant-step:hover { opacity: 1; }
+  .step-num {
+    font-family: 'Cinzel', serif;
+    font-size: 10px; letter-spacing: 0.2em;
+    color: var(--gold); min-width: 28px; padding-top: 2px;
+  }
+  .step-text { font-size: 14px; color: rgba(255,255,255,0.65); line-height: 1.6; }
+  .step-text strong { color: var(--white); font-weight: 500; display: block; margin-bottom: 2px; font-size: 15px; }
+
+  .decant-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
+  .pill {
+    padding: 8px 16px;
+    border: 1px solid rgba(212,175,55,0.3);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.6);
+    transition: all 0.3s;
+  }
+  .pill:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ─── BENEFITS ─── */
+  #beneficios { padding: 120px 0; background: var(--gray-dark); }
+  .benefits-header { text-align: center; margin-bottom: 80px; }
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(212,175,55,0.08);
+    border: 1px solid rgba(212,175,55,0.08);
+  }
+  .benefit-card {
+    background: var(--black);
+    padding: 48px 36px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s;
+  }
+  .benefit-card:hover { background: #0d0d0d; }
+  .benefit-icon-wrap {
+    width: 56px; height: 56px;
+    border: 1px solid rgba(212,175,55,0.25);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 28px;
+    transition: border-color 0.4s, background 0.4s;
+  }
+  .benefit-card:hover .benefit-icon-wrap { border-color: var(--gold); background: var(--gold-dim); }
+  .benefit-icon { font-size: 22px; }
+  .benefit-title {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+    margin-bottom: 14px;
+    color: var(--white);
+  }
+  .benefit-desc { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.8; }
+  .benefit-corner {
+    position: absolute; top: 0; right: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 40px 40px 0;
+    border-color: transparent rgba(212,175,55,0.1) transparent transparent;
+    transition: border-color 0.4s;
+  }
+  .benefit-card:hover .benefit-corner { border-color: transparent rgba(212,175,55,0.25) transparent transparent; }
+
+  /* ─── SOLICITUD ─── */
+  #solicitud { padding: 120px 0; }
+  .solicitud-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .solicitud-left { padding-top: 8px; }
+  .solicitud-desc { font-size: 15px; color: rgba(255,255,255,0.5); line-height: 1.9; margin-bottom: 36px; }
+  .feature-list { list-style: none; }
+  .feature-list li {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 13px; color: rgba(255,255,255,0.55);
+  }
+  .feature-list li::before {
+    content: '';
+    width: 20px; height: 1px;
+    background: var(--gold); flex-shrink: 0;
+  }
+  .solicitud-form {
+    background: var(--gray-dark);
+    border: 1px solid rgba(212,175,55,0.12);
+    padding: 48px 40px;
+  }
+  .form-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 9px; letter-spacing: 0.35em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 32px;
+  }
+  .field { margin-bottom: 24px; }
+  .field label {
+    display: block;
+    font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase;
+    font-family: 'Cinzel', serif;
+    color: rgba(255,255,255,0.4); margin-bottom: 10px;
+  }
+  .field input {
+    width: 100%;
+    background: transparent;
+    border: none; border-bottom: 1px solid rgba(255,255,255,0.12);
+    padding: 12px 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px; color: var(--white);
+    outline: none;
+    transition: border-color 0.4s;
+    cursor: none;
+  }
+  .field input::placeholder { color: rgba(255,255,255,0.2); }
+  .field input:focus { border-color: var(--gold); }
+  .field input:-webkit-autofill { box-shadow: 0 0 0 1000px var(--gray-dark) inset; -webkit-text-fill-color: var(--white); }
+  .form-submit { width: 100%; margin-top: 8px; justify-content: center; }
+
+  /* ─── TESTIMONIALS ─── */
+  #testimonios { padding: 120px 0; background: var(--gray-dark); }
+  .testimonios-header { text-align: center; margin-bottom: 64px; }
+  .testimonios-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(212,175,55,0.08);
+  }
+  .testi-card {
+    background: var(--black);
+    padding: 48px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .testi-card::before {
+    content: '\201C';
+    position: absolute; top: 20px; left: 30px;
+    font-family: 'Cinzel', serif;
+    font-size: 80px;
+    color: rgba(212,175,55,0.08);
+    line-height: 1;
+    pointer-events: none;
+  }
+  .stars { display: flex; gap: 4px; margin-bottom: 24px; }
+  .star { color: var(--gold); font-size: 12px; }
+  .testi-text { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.9; margin-bottom: 32px; font-style: italic; }
+  .testi-author { display: flex; align-items: center; gap: 16px; }
+  .testi-avatar {
+    width: 40px; height: 40px;
+    background: var(--gray-mid);
+    border-radius: 50%;
+    border: 1px solid rgba(212,175,55,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cinzel', serif;
+    font-size: 13px; color: var(--gold);
+  }
+  .testi-name { font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 0.1em; color: var(--white); margin-bottom: 3px; }
+  .testi-loc { font-size: 11px; color: var(--gray-text); letter-spacing: 0.05em; }
+
+  /* ─── CTA ─── */
+  #cta { padding: 120px 0; position: relative; overflow: hidden; }
+  .cta-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg,
+      rgba(212,175,55,0.06) 0%,
+      transparent 40%,
+      rgba(212,175,55,0.04) 100%
+    );
+  }
+  .cta-grid-lines {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(212,175,55,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212,175,55,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at center, black 40%, transparent 100%);
+  }
+  .cta-content { position: relative; z-index: 2; text-align: center; max-width: 700px; margin: 0 auto; }
+  .cta-big {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(32px, 5vw, 64px);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    line-height: 1.12;
+    margin: 20px 0 16px;
+  }
+  .cta-sub { font-size: 15px; color: rgba(255,255,255,0.45); margin-bottom: 48px; letter-spacing: 0.04em; }
+  .cta-wa-btn {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 18px 48px;
+    background: var(--gold);
+    color: var(--black);
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    cursor: none;
+    position: relative; overflow: hidden;
+    transition: all 0.4s var(--ease-silk);
+  }
+  .cta-wa-btn::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(255,255,255,0.15);
+    transform: translateX(-100%) skew(-20deg);
+    transition: transform 0.6s var(--ease-expo);
+  }
+  .cta-wa-btn:hover::before { transform: translateX(120%) skew(-20deg); }
+  .cta-wa-btn:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 20px 60px rgba(212,175,55,0.3); }
+  .cta-note { font-size: 11px; color: rgba(255,255,255,0.2); margin-top: 20px; letter-spacing: 0.1em; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid rgba(212,175,55,0.1);
+    background: var(--black);
+    padding: 64px 0 40px;
+  }
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    margin-bottom: 32px;
+  }
+  .footer-logo {
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .footer-desc { font-size: 13px; color: rgba(255,255,255,0.35); line-height: 1.9; max-width: 280px; }
+  .footer-social { display: flex; gap: 12px; margin-top: 28px; }
+  .social-icon {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(212,175,55,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    transition: all 0.3s;
+    cursor: none;
+  }
+  .social-icon:hover { border-color: var(--gold); background: var(--gold-dim); }
+  .footer-col h4 {
+    font-family: 'Cinzel', serif;
+    font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 24px;
+  }
+  .footer-links { list-style: none; }
+  .footer-links li { margin-bottom: 12px; }
+  .footer-links a {
+    font-size: 13px; color: rgba(255,255,255,0.35);
+    transition: color 0.3s; letter-spacing: 0.03em;
+  }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-payments { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .payment-badge {
+    padding: 5px 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.3);
+  }
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .footer-copy { font-size: 11px; color: rgba(255,255,255,0.2); letter-spacing: 0.08em; }
+  .footer-tagline { font-family: 'Cinzel', serif; font-size: 10px; color: rgba(212,175,55,0.3); letter-spacing: 0.2em; }
+
+  /* ─── FLOATING WA ─── */
+  #wa-float {
+    position: fixed; bottom: 32px; right: 32px; z-index: 900;
+    width: 56px; height: 56px;
+    background: #25D366;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    cursor: none;
+    box-shadow: 0 8px 32px rgba(37,211,102,0.4);
+    transition: transform 0.3s var(--ease-silk), box-shadow 0.3s;
+    animation: wa-pulse 3s ease-in-out infinite;
+  }
+  #wa-float:hover { transform: scale(1.12); box-shadow: 0 12px 40px rgba(37,211,102,0.5); }
+  @keyframes wa-pulse {
+    0%, 100% { box-shadow: 0 8px 32px rgba(37,211,102,0.4); }
+    50% { box-shadow: 0 8px 32px rgba(37,211,102,0.4), 0 0 0 12px rgba(37,211,102,0.08); }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1024px) {
+    .categories-grid { grid-template-columns: repeat(2, 1fr); }
+    .products-grid { grid-template-columns: repeat(2, 1fr); }
+    .benefits-grid { grid-template-columns: repeat(2, 1fr); }
+    .decants-inner { grid-template-columns: 1fr; gap: 60px; }
+    .decant-visual { min-height: 300px; }
+    .solicitud-inner { grid-template-columns: 1fr; gap: 48px; }
+    .footer-inner { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .testimonios-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 768px) {
+    .nav-links, .nav-wa-btn { display: none; }
+    .hamburger { display: flex; }
+    .categories-grid { grid-template-columns: repeat(2, 1fr); }
+    .products-grid { grid-template-columns: 1fr 1fr; }
+    .benefits-grid { grid-template-columns: 1fr; }
+    #beneficios { padding: 80px 0; }
+    #productos, #decants, #categorias, #solicitud, #testimonios, #cta { padding: 80px 0; }
+    .footer-inner { grid-template-columns: 1fr; gap: 36px; }
+    body { cursor: auto; }
+    #cursor-dot, #cursor-ring { display: none; }
+    .solicitud-form { padding: 32px 24px; }
+    .hero-title { font-size: clamp(30px, 8vw, 52px); }
+    .hero-btns { flex-direction: column; align-items: center; }
+    .btn { padding: 13px 28px; font-size: 10px; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+  }
+  @media (max-width: 480px) {
+    .products-grid { grid-template-columns: 1fr; }
+    .categories-grid { grid-template-columns: 1fr 1fr; }
+    .container { padding: 0 16px; }
+  }
+
+  /* ─── REDUCED MOTION ─── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.3s !important; }
+    .particle { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<!-- MOBILE MENU -->
+<nav class="mobile-menu" id="mobileMenu">
+  <a href="#categorias" onclick="closeMobileMenu()">Catálogo</a>
+  <a href="#decants" onclick="closeMobileMenu()">Decants</a>
+  <a href="#solicitud" onclick="closeMobileMenu()">Solicitar Perfume</a>
+  <a href="#footer" onclick="closeMobileMenu()">Contacto</a>
+  <a href="https://wa.me/526145972051" target="_blank" class="btn btn-gold" style="margin-top:16px;">WhatsApp</a>
+</nav>
+
+<!-- NAVBAR -->
+<header id="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="#hero" class="nav-logo">NOVA<span>KINGS</span></a>
+      <ul class="nav-links">
+        <li><a href="#categorias">Catálogo</a></li>
+        <li><a href="#decants">Decants</a></li>
+        <li><a href="#solicitud">Solicitar Perfume</a></li>
+        <li><a href="#footer">Contacto</a></li>
+      </ul>
+      <a href="https://wa.me/526145972051" target="_blank" class="nav-wa-btn">
+        <span>📱</span> WhatsApp
+      </a>
+      <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menú">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-bottle"></div>
+  <div class="hero-particles" id="particles"></div>
+  <div class="hero-content">
+    <span class="hero-pretitle">Perfumería de Autor · Chihuahua</span>
+    <h1 class="hero-title">Encuentra tu próxima<br><em>fragancia favorita</em></h1>
+    <p class="hero-sub">Perfumes originales, decants premium<br>y atención verdaderamente personalizada.</p>
+    <div class="hero-divider"></div>
+    <div class="hero-btns">
+      <a href="#categorias" class="btn btn-gold">Explorar Catálogo</a>
+      <a href="https://wa.me/526145972051" target="_blank" class="btn btn-outline">Cotizar por WhatsApp</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- CATEGORÍAS -->
+<section id="categorias">
+  <div class="container">
+    <div class="categories-header reveal">
+      <span class="eyebrow">Nuestras Líneas</span>
+      <h2 class="section-title">Explora por Categoría</h2>
+      <div class="gold-line centered"></div>
+    </div>
+    <div class="categories-grid">
+      <div class="cat-card reveal reveal-delay-1">
+        <span class="cat-icon">🧔</span>
+        <p class="cat-name">Perfumes Hombre</p>
+        <div class="cat-border-bottom"></div>
+      </div>
+      <div class="cat-card reveal reveal-delay-2">
+        <span class="cat-icon">💐</span>
+        <p class="cat-name">Perfumes Mujer</p>
+        <div class="cat-border-bottom"></div>
+      </div>
+      <div class="cat-card reveal reveal-delay-3">
+        <span class="cat-icon">🧪</span>
+        <p class="cat-name">Decants</p>
+        <div class="cat-border-bottom"></div>
+      </div>
+      <div class="cat-card reveal reveal-delay-4">
+        <span class="cat-icon">🎁</span>
+        <p class="cat-name">Regalos</p>
+        <div class="cat-border-bottom"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTOS DESTACADOS -->
+<section id="productos">
+  <div class="container">
+    <div class="products-header reveal">
+      <span class="eyebrow">Selección Curada</span>
+      <h2 class="section-title">Productos Destacados</h2>
+      <div class="gold-line"></div>
+    </div>
+    <div class="products-grid" id="productsGrid">
+      <!-- JS Generated -->
+    </div>
+  </div>
+</section>
+
+<!-- DECANTS -->
+<section id="decants">
+  <div class="container">
+    <div class="decants-inner">
+      <div class="decant-visual reveal">
+        <div class="bottle-large"></div>
+        <div class="vial vial-1"><div class="vial-body"></div></div>
+        <div class="vial vial-2"><div class="vial-body"></div></div>
+        <div class="vial vial-3"><div class="vial-body"></div></div>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <span class="eyebrow">Conoce más</span>
+        <h2 class="section-title">¿Qué es un Decant?</h2>
+        <div class="gold-line"></div>
+        <div class="decant-steps">
+          <div class="decant-step">
+            <span class="step-num">01</span>
+            <div class="step-text"><strong>Fragancia Original</strong>Tomamos el perfume directamente de un frasco 100% auténtico.</div>
+          </div>
+          <div class="decant-step">
+            <span class="step-num">02</span>
+            <div class="step-text"><strong>Transferencia Precisa</strong>Se envasa en atomizadores de cristal de alta calidad.</div>
+          </div>
+          <div class="decant-step">
+            <span class="step-num">03</span>
+            <div class="step-text"><strong>Tú Decides</strong>Prueba antes de invertir en el frasco completo.</div>
+          </div>
+          <div class="decant-step">
+            <span class="step-num">04</span>
+            <div class="step-text"><strong>Acceso Premium</strong>Descubre fragancias exclusivas a una fracción del costo.</div>
+          </div>
+        </div>
+        <div class="decant-pills">
+          <span class="pill">Más económico</span>
+          <span class="pill">Fácil de transportar</span>
+          <span class="pill">Ideal para probar</span>
+          <span class="pill">Fragancias premium</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFICIOS -->
+<section id="beneficios">
+  <div class="container">
+    <div class="benefits-header reveal">
+      <span class="eyebrow">Por qué NOVAKINGS</span>
+      <h2 class="section-title">Nuestra Promesa</h2>
+      <div class="gold-line centered"></div>
+    </div>
+    <div class="benefits-grid" id="benefitsGrid">
+      <!-- JS Generated -->
+    </div>
+  </div>
+</section>
+
+<!-- SOLICITUD -->
+<section id="solicitud">
+  <div class="container">
+    <div class="solicitud-inner">
+      <div class="solicitud-left reveal">
+        <span class="eyebrow">Búsqueda Personalizada</span>
+        <h2 class="section-title">¿No encuentras el perfume que buscas?</h2>
+        <div class="gold-line"></div>
+        <p class="solicitud-desc">Nuestro diferenciador: si tienes en mente una fragancia específica y no la tenemos en catálogo, nosotros la conseguimos. Solo dinos qué buscas.</p>
+        <ul class="feature-list">
+          <li>Cualquier marca internacional</li>
+          <li>Ediciones limitadas y discontinuadas</li>
+          <li>Cotización sin compromiso</li>
+          <li>Respuesta en menos de 24 horas</li>
+          <li>Envío gratis en Chihuahua</li>
+        </ul>
+      </div>
+      <div class="solicitud-form reveal reveal-delay-2">
+        <p class="form-eyebrow">Solicitar Cotización</p>
+        <div class="field">
+          <label>Tu nombre</label>
+          <input type="text" placeholder="¿Cómo te llamas?">
+        </div>
+        <div class="field">
+          <label>Marca del perfume</label>
+          <input type="text" placeholder="Ej: Creed, Tom Ford, Dior...">
+        </div>
+        <div class="field">
+          <label>WhatsApp</label>
+          <input type="tel" placeholder="+52 614 000 0000">
+        </div>
+        <a href="https://wa.me/526145972051?text=Hola%20NOVAKINGS%20👑%0AMe%20gustaría%20solicitar%20una%20cotización%20para%20un%20perfume." target="_blank" class="btn btn-gold form-submit">
+          Solicitar Cotización
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIOS -->
+<section id="testimonios">
+  <div class="container">
+    <div class="testimonios-header reveal">
+      <span class="eyebrow">Clientes que confían</span>
+      <h2 class="section-title">Lo que dicen de nosotros</h2>
+      <div class="gold-line centered"></div>
+    </div>
+    <div class="testimonios-grid">
+      <div class="testi-card reveal reveal-delay-1">
+        <div class="stars">★★★★★</div>
+        <p class="testi-text">Pedí un Creed Aventus que no encontraba en ningún lado y lo consiguieron en menos de una semana. El decant que probé primero fue perfecto. 100% recomendado.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">RG</div>
+          <div>
+            <p class="testi-name">Ricardo G.</p>
+            <p class="testi-loc">Chihuahua, Chih.</p>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal reveal-delay-2">
+        <div class="stars">★★★★★</div>
+        <p class="testi-text">La atención es excepcional. Me explicaron cada fragancia antes de decidirme. Compré 3 decants y ya sé cuál quiero completo. ¡Excelente servicio!</p>
+        <div class="testi-author">
+          <div class="testi-avatar">SM</div>
+          <div>
+            <p class="testi-name">Sofía M.</p>
+            <p class="testi-loc">Chihuahua, Chih.</p>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal reveal-delay-3">
+        <div class="stars">★★★★★</div>
+        <p class="testi-text">Compré el Khamrah y llegó perfectamente empacado, con envío gratuito. Los precios son muy competitivos y la calidad es inmejorable. ¡Totalmente originales!</p>
+        <div class="testi-author">
+          <div class="testi-avatar">JL</div>
+          <div>
+            <p class="testi-name">Jorge L.</p>
+            <p class="testi-loc">Chihuahua, Chih.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section id="cta">
+  <div class="cta-bg"></div>
+  <div class="cta-grid-lines"></div>
+  <div class="container">
+    <div class="cta-content reveal">
+      <span class="eyebrow">Tu fragancia te espera</span>
+      <h2 class="cta-big">¿Listo para encontrar<br>tu próxima fragancia?</h2>
+      <p class="cta-sub">Escríbenos ahora y recibe atención personalizada al instante.</p>
+      <a href="https://wa.me/526145972051?text=Hola%20NOVAKINGS%20👑%0AQuiero%20explorar%20su%20catálogo%20de%20fragancias." target="_blank" class="cta-wa-btn">
+        <span>💬</span>
+        Hablar por WhatsApp
+      </a>
+      <p class="cta-note">+52 614 597 2051 · Envíos gratis en Chihuahua</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo">NOVAKINGS</div>
+        <p class="footer-desc">Perfumes originales, decants premium y atención personalizada. Si no encuentras tu fragancia ideal, nosotros la conseguimos.</p>
+        <div class="footer-social">
+          <a href="https://wa.me/526145972051" target="_blank" class="social-icon" title="WhatsApp">📱</a>
+          <a href="#" class="social-icon" title="Instagram">📷</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Navegación</h4>
+        <ul class="footer-links">
+          <li><a href="#hero">Inicio</a></li>
+          <li><a href="#categorias">Catálogo</a></li>
+          <li><a href="#decants">Decants</a></li>
+          <li><a href="#solicitud">Solicitar Perfume</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <ul class="footer-links">
+          <li><a href="https://wa.me/526145972051" target="_blank">WhatsApp</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Chihuahua, Chih.</a></li>
+          <li><a href="#">Envíos Gratis</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Métodos de Pago</h4>
+        <div class="footer-payments">
+          <span class="payment-badge">Efectivo</span>
+          <span class="payment-badge">Transferencia</span>
+          <span class="payment-badge">OXXO</span>
+          <span class="payment-badge">Tarjeta</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 NOVAKINGS PARFUMS. Todos los derechos reservados.</p>
+      <p class="footer-tagline">LUXURY · AUTHENTICITY · PASSION</p>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING WA -->
+<a href="https://wa.me/526145972051?text=Hola%20NOVAKINGS%20👑%0AQuiero%20información%20sobre%20sus%20fragancias." target="_blank" id="wa-float" title="Contactar por WhatsApp">
+  💬
+</a>
+
+<script>
+/* ─── CURSOR ─── */
+const dot  = document.getElementById('cursor-dot');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+(function animCursor() {
+  dot.style.left  = mx + 'px';
+  dot.style.top   = my + 'px';
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top  = ry + 'px';
+  requestAnimationFrame(animCursor);
+})();
+
+/* ─── NAVBAR ─── */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+/* ─── MOBILE MENU ─── */
+const hamburger   = document.getElementById('hamburger');
+const mobileMenu  = document.getElementById('mobileMenu');
+function toggleMenu() {
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+  document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+}
+function closeMobileMenu() {
+  hamburger.classList.remove('open');
+  mobileMenu.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ─── PARTICLES ─── */
+const particleContainer = document.getElementById('particles');
+for (let i = 0; i < 18; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const size = Math.random() * 3 + 1;
+  p.style.cssText = `
+    width: ${size}px; height: ${size}px;
+    left: ${10 + Math.random() * 80}%;
+    bottom: ${Math.random() * 40}%;
+    --dx: ${(Math.random() - 0.5) * 60}px;
+    animation-duration: ${4 + Math.random() * 6}s;
+    animation-delay: ${Math.random() * 6}s;
+  `;
+  particleContainer.appendChild(p);
+}
+
+/* ─── PRODUCTS DATA ─── */
+const products = [
+  { name: 'Club de Nuit Intense Man', brand: 'Armaf', price: 'Desde $599', initial: 'CN' },
+  { name: 'Hawas',                    brand: 'Rasasi',  price: 'Desde $549', initial: 'HW' },
+  { name: '9PM',                      brand: 'Afnan',   price: 'Desde $499', initial: '9P' },
+  { name: 'Khamrah',                  brand: 'Lattafa', price: 'Desde $449', initial: 'KH' },
+  { name: 'Le Male Elixir',           brand: 'Jean Paul Gaultier', price: 'Desde $899', initial: 'LM' },
+  { name: 'Sweet Tooth',              brand: 'Vilhelm Parfumerie', price: 'Desde $799', initial: 'ST' },
+  { name: 'Yara',                     brand: 'Lattafa', price: 'Desde $399', initial: 'YR' },
+  { name: 'Bleu de Chanel',           brand: 'Chanel',  price: 'Desde $1,299', initial: 'BC' },
+];
+const pgrid = document.getElementById('productsGrid');
+products.forEach((p, i) => {
+  const waMsg = encodeURIComponent(`Hola NOVAKINGS 👑\nMe interesa el perfume ${p.name}.\n¿Podrían brindarme más información?`);
+  const card = document.createElement('div');
+  card.className = `product-card reveal reveal-delay-${(i % 4) + 1}`;
+  card.innerHTML = `
+    <div class="product-img" data-initial="${p.initial}">
+      <div class="product-gold-line"></div>
+    </div>
+    <div class="product-info">
+      <p class="product-brand">${p.brand}</p>
+      <h3 class="product-name">${p.name}</h3>
+      <p class="product-price">${p.price}</p>
+      <a href="https://wa.me/526145972051?text=${waMsg}" target="_blank" class="product-wa-btn">
+        💬 Consultar
+      </a>
+    </div>
+  `;
+  pgrid.appendChild(card);
+});
+
+/* ─── BENEFITS DATA ─── */
+const benefits = [
+  { icon: '✦', title: 'Perfumes 100% Originales', desc: 'Solo trabajamos con fragancias auténticas. Cada producto tiene garantía de autenticidad.' },
+  { icon: '◈', title: 'Atención Personalizada', desc: 'Te asesoramos para encontrar la fragancia que mejor va contigo según tu personalidad.' },
+  { icon: '◉', title: 'Envíos Gratis en Chihuahua', desc: 'Sin costos ocultos. Tu pedido llega directo a la puerta de tu casa en la ciudad.' },
+  { icon: '❋', title: 'Decants Premium', desc: 'Prueba antes de comprar el frasco completo. Muestras de calidad en atomizadores de cristal.' },
+  { icon: '◆', title: 'Perfumes Bajo Pedido', desc: 'No encontraste lo que buscas? Nosotros lo conseguimos. Cualquier fragancia del mundo.' },
+  { icon: '◇', title: 'Múltiples Métodos de Pago', desc: 'Efectivo, transferencia, OXXO o tarjeta. Pagá como más te acomode.' },
+];
+const bgrid = document.getElementById('benefitsGrid');
+benefits.forEach((b, i) => {
+  const card = document.createElement('div');
+  card.className = `benefit-card reveal reveal-delay-${(i % 3) + 1}`;
+  card.innerHTML = `
+    <div class="benefit-corner"></div>
+    <div class="benefit-icon-wrap">
+      <span class="benefit-icon" style="color:var(--gold);font-family:'Cinzel',serif;font-size:18px;">${b.icon}</span>
+    </div>
+    <h3 class="benefit-title">${b.title}</h3>
+    <p class="benefit-desc">${b.desc}</p>
+  `;
+  bgrid.appendChild(card);
+});
+
+/* ─── SCROLL REVEAL ─── */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
