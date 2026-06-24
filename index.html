@@ -421,32 +421,22 @@
     overflow: hidden;
     display: flex; align-items: center; justify-content: center;
   }
-  /* Elegant perfume placeholder */
-  .product-img::before {
+  .product-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s var(--ease-expo);
+    display: block;
+  }
+  .product-card:hover .product-img img { transform: scale(1.06); }
+  .product-img .product-overlay {
     content: '';
-    width: 55%;
-    aspect-ratio: 0.48;
-    background: linear-gradient(160deg, #3a3a3a 0%, #2B2B2B 50%, #3a3a3a 100%);
-    clip-path: polygon(
-      38% 0%, 62% 0%,
-      65% 10%, 70% 12%, 70% 16%, 65% 18%,
-      67% 22%, 67% 95%,
-      60% 100%, 40% 100%,
-      33% 95%, 33% 22%,
-      35% 18%, 30% 16%, 30% 12%, 35% 10%
-    );
-    transition: transform 0.6s var(--ease-expo);
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(10,10,10,0.55) 0%, transparent 55%);
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
   }
-  .product-card:hover .product-img::before { transform: scale(1.04) translateY(-3px); }
-  .product-img::after {
-    content: attr(data-initial);
-    position: absolute;
-    font-family: 'Cinzel', serif;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    color: rgba(212,175,55,0.5);
-    bottom: 14px; right: 14px;
-  }
+  .product-card:hover .product-img .product-overlay { opacity: 1; }
   .product-gold-line {
     position: absolute; bottom: 0; left: 0;
     width: 0; height: 2px; background: var(--gold);
@@ -1306,14 +1296,14 @@ for (let i = 0; i < 18; i++) {
 
 /* ─── PRODUCTS DATA ─── */
 const products = [
-  { name: 'Club de Nuit Intense Man', brand: 'Armaf', price: 'Desde $599', initial: 'CN' },
-  { name: 'Hawas',                    brand: 'Rasasi',  price: 'Desde $549', initial: 'HW' },
-  { name: '9PM',                      brand: 'Afnan',   price: 'Desde $499', initial: '9P' },
-  { name: 'Khamrah',                  brand: 'Lattafa', price: 'Desde $449', initial: 'KH' },
-  { name: 'Le Male Elixir',           brand: 'Jean Paul Gaultier', price: 'Desde $899', initial: 'LM' },
-  { name: 'Sweet Tooth',              brand: 'Vilhelm Parfumerie', price: 'Desde $799', initial: 'ST' },
-  { name: 'Yara',                     brand: 'Lattafa', price: 'Desde $399', initial: 'YR' },
-  { name: 'Bleu de Chanel',           brand: 'Chanel',  price: 'Desde $1,299', initial: 'BC' },
+  { name: 'Club de Nuit Intense Man', brand: 'Armaf',              price: 'Desde $599',   img: 'club-de-nuit-intense-man.jpg' },
+  { name: 'Hawas',                    brand: 'Rasasi',             price: 'Desde $549',   img: 'hawas.jpg' },
+  { name: '9PM',                      brand: 'Afnan',              price: 'Desde $499',   img: '9pm.jpg' },
+  { name: 'Khamrah',                  brand: 'Lattafa',            price: 'Desde $449',   img: 'khamrah.jpg' },
+  { name: 'Le Male Elixir',           brand: 'Jean Paul Gaultier', price: 'Desde $899',   img: 'le-male-elixir.jpg' },
+  { name: 'Sweet Tooth',              brand: 'Vilhelm Parfumerie', price: 'Desde $799',   img: 'sweet-tooth.jpg' },
+  { name: 'Yara',                     brand: 'Lattafa',            price: 'Desde $399',   img: 'yara.jpg' },
+  { name: 'Bleu de Chanel',           brand: 'Chanel',             price: 'Desde $1,299', img: 'bleu-de-chanel.jpg' },
 ];
 const pgrid = document.getElementById('productsGrid');
 products.forEach((p, i) => {
@@ -1321,7 +1311,9 @@ products.forEach((p, i) => {
   const card = document.createElement('div');
   card.className = `product-card reveal reveal-delay-${(i % 4) + 1}`;
   card.innerHTML = `
-    <div class="product-img" data-initial="${p.initial}">
+    <div class="product-img">
+      <img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.parentElement.style.background='#2B2B2B'">
+      <div class="product-overlay"></div>
       <div class="product-gold-line"></div>
     </div>
     <div class="product-info">
