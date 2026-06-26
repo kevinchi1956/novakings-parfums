@@ -470,6 +470,43 @@
     display: flex; align-items: center; justify-content: center;
     min-height: 480px;
   }
+  /* ─── DECANT PHOTO ─── */
+  .decant-photo-wrap {
+    position: relative;
+    width: 100%;
+    height: 480px;
+    overflow: hidden;
+  }
+  .decant-photo {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: transform 0.8s var(--ease-expo);
+  }
+  .decant-photo-wrap:hover .decant-photo { transform: scale(1.04); }
+  .decant-photo-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(10,10,10,0.45) 0%,
+      rgba(10,10,10,0.15) 40%,
+      rgba(10,10,10,0.55) 100%
+    );
+    pointer-events: none;
+  }
+  .decant-photo-border {
+    position: absolute; inset: 0;
+    border: 1px solid rgba(212,175,55,0.25);
+    pointer-events: none;
+  }
+  .decant-photo-border::before {
+    content: '';
+    position: absolute;
+    top: 12px; left: 12px; right: 12px; bottom: 12px;
+    border: 1px solid rgba(212,175,55,0.1);
+  }
+
   /* Large bottle */
   .bottle-large {
     width: 120px;
@@ -1032,10 +1069,11 @@
   <div class="container">
     <div class="decants-inner">
       <div class="decant-visual reveal">
-        <div class="bottle-large"></div>
-        <div class="vial vial-1"><div class="vial-body"></div></div>
-        <div class="vial vial-2"><div class="vial-body"></div></div>
-        <div class="vial vial-3"><div class="vial-body"></div></div>
+        <div class="decant-photo-wrap">
+          <img src="decants.jpg" alt="Decants Premium NOVAKINGS" class="decant-photo">
+          <div class="decant-photo-overlay"></div>
+          <div class="decant-photo-border"></div>
+        </div>
       </div>
       <div class="reveal reveal-delay-2">
         <span class="eyebrow">Conoce más</span>
@@ -1231,8 +1269,8 @@
         </div>
         <p class="footer-desc">Perfumes originales, decants premium y atención personalizada. Si no encuentras tu fragancia ideal, nosotros la conseguimos.</p>
         <div class="footer-social">
-          <a href="https://wa.me/526145972051" target="_blank" class="social-icon" title="WhatsApp">📱</a>
-          <a href="#" class="social-icon" title="Instagram">📷</a>
+          <a href="https://wa.me/526145972051" target="_blank" class="social-icon" title="WhatsApp"><img src="whatsapp.jpg" alt="WhatsApp" style="width:20px;height:20px;object-fit:contain;"></a>
+          <a href="#" class="social-icon" title="Instagram"><img src="instagram.jpg" alt="Instagram" style="width:20px;height:20px;object-fit:contain;"></a>
         </div>
       </div>
       <div class="footer-col">
@@ -1272,7 +1310,7 @@
 
 <!-- FLOATING WA -->
 <a href="https://wa.me/526145972051?text=Hola%20NOVAKINGS%20👑%0AQuiero%20información%20sobre%20sus%20fragancias." target="_blank" id="wa-float" title="Contactar por WhatsApp">
-  💬
+  <img src="whatsapp.jpg" alt="WhatsApp" style="width:32px;height:32px;object-fit:contain;">
 </a>
 
 <script>
