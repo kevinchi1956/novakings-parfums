@@ -229,33 +229,15 @@
     overflow: hidden;
   }
   .hero-bg {
-    position: absolute; inset: 0;
-    background:
-      radial-gradient(ellipse 60% 70% at 70% 40%, rgba(212,175,55,0.08) 0%, transparent 70%),
-      radial-gradient(ellipse 80% 60% at 20% 80%, rgba(212,175,55,0.04) 0%, transparent 70%),
-      linear-gradient(160deg, #0A0A0A 0%, #171717 50%, #0A0A0A 100%);
+    position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(160deg, rgba(10,10,10,0.88) 0%, rgba(10,10,10,0.55) 50%, rgba(10,10,10,0.82) 100%);
   }
-  /* Fragrance bottle silhouette via CSS */
-  .hero-bottle {
-    position: absolute;
-    right: 8%;
-    top: 50%;
-    transform: translateY(-50%);
-    width: min(320px, 38vw);
-    aspect-ratio: 0.45;
-    opacity: 0.18;
-    background: linear-gradient(160deg, #D4AF37 0%, #8B7419 40%, #D4AF37 60%, #6B5A15 100%);
-    clip-path: polygon(
-      38% 0%, 62% 0%,
-      65% 12%, 72% 14%, 72% 18%, 65% 20%,
-      68% 24%, 68% 96%,
-      62% 100%, 38% 100%,
-      32% 96%, 32% 24%,
-      35% 20%, 28% 18%, 28% 14%, 35% 12%
-    );
-    filter: blur(1px);
+  .hero-bg-img {
+    position: absolute; inset: 0; z-index: 0;
+    background: url('hero.jpg') center center / cover no-repeat;
   }
-  .hero-particles { position: absolute; inset: 0; pointer-events: none; }
+  .hero-bottle { display: none; }
+  .hero-particles { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
   .particle {
     position: absolute;
     border-radius: 50%;
@@ -270,7 +252,7 @@
     100% { transform: translateY(-120px) translateX(var(--dx, 20px)) scale(0.4); opacity: 0; }
   }
   .hero-content {
-    position: relative; z-index: 2;
+    position: relative; z-index: 3;
     text-align: center;
     padding: 80px 24px;
     max-width: 820px;
@@ -324,7 +306,7 @@
   .hero-scroll {
     position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
     display: flex; flex-direction: column; align-items: center; gap: 8px;
-    z-index: 2; opacity: 0;
+    z-index: 3; opacity: 0;
     animation: fadeIn 1s var(--ease-expo) 1.4s forwards;
   }
   .hero-scroll span {
@@ -356,43 +338,38 @@
     border: 1px solid rgba(212,175,55,0.1);
   }
   .cat-card {
-    background: var(--gray-dark);
-    padding: 48px 32px;
-    text-align: center;
-    cursor: none;
     position: relative;
     overflow: hidden;
-    transition: background 0.5s var(--ease-silk);
+    cursor: none;
+    height: 320px;
+    display: flex; align-items: flex-end; justify-content: center;
+    padding-bottom: 32px;
   }
-  .cat-card::before {
-    content: '';
+  .cat-img {
     position: absolute; inset: 0;
-    background: linear-gradient(135deg, var(--gold-dim) 0%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.5s var(--ease-silk);
+    background-size: cover; background-position: center;
+    transition: transform 0.7s var(--ease-expo);
+    filter: brightness(0.55);
   }
-  .cat-card:hover::before { opacity: 1; }
-  .cat-card:hover { background: #1a1a1a; }
-  .cat-icon {
-    font-size: 36px; margin-bottom: 20px;
-    display: block;
-    filter: grayscale(1) brightness(0.7);
-    transition: filter 0.4s;
+  .cat-card:hover .cat-img { transform: scale(1.06); filter: brightness(0.4); }
+  .cat-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(10,10,10,0.85) 0%, transparent 60%);
   }
-  .cat-card:hover .cat-icon { filter: none; }
   .cat-name {
+    position: relative; z-index: 2;
     font-family: 'Cinzel', serif;
     font-size: 13px;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.75);
-    transition: color 0.4s;
+    color: var(--white);
+    transition: color 0.4s, letter-spacing 0.4s;
   }
-  .cat-card:hover .cat-name { color: var(--gold); }
+  .cat-card:hover .cat-name { color: var(--gold); letter-spacing: 0.3em; }
   .cat-border-bottom {
-    position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+    position: absolute; bottom: 0; left: 0;
     width: 0; height: 2px; background: var(--gold);
-    transition: width 0.5s var(--ease-expo);
+    transition: width 0.5s var(--ease-expo); z-index: 2;
   }
   .cat-card:hover .cat-border-bottom { width: 100%; }
 
@@ -719,6 +696,40 @@
   .testi-name { font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 0.1em; color: var(--white); margin-bottom: 3px; }
   .testi-loc { font-size: 11px; color: var(--gray-text); letter-spacing: 0.05em; }
 
+  /* ─── TESTIMONIOS LAYOUT ─── */
+  .testimonios-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: rgba(212,175,55,0.08);
+  }
+  .testi-video {
+    background: var(--black);
+    padding: 40px;
+    display: flex; flex-direction: column; gap: 20px;
+  }
+  .video-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 9/16;
+    max-height: 520px;
+    overflow: hidden;
+    background: #000;
+    border: 1px solid rgba(212,175,55,0.15);
+  }
+  .video-wrap iframe {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+  }
+  .testi-cards-col {
+    display: flex; flex-direction: column; gap: 2px;
+    background: rgba(212,175,55,0.08);
+  }
+  @media (max-width: 768px) {
+    .testimonios-layout { grid-template-columns: 1fr; }
+    .video-wrap { max-height: 400px; }
+  }
+
   /* ─── CTA ─── */
   #cta { padding: 120px 0; position: relative; overflow: hidden; }
   .cta-bg {
@@ -946,8 +957,8 @@
 
 <!-- HERO -->
 <section id="hero">
+  <div class="hero-bg-img"></div>
   <div class="hero-bg"></div>
-  <div class="hero-bottle"></div>
   <div class="hero-particles" id="particles"></div>
   <div class="hero-content">
     <span class="hero-pretitle">Perfumería de Autor · Chihuahua</span>
@@ -975,22 +986,26 @@
     </div>
     <div class="categories-grid">
       <div class="cat-card reveal reveal-delay-1">
-        <span class="cat-icon">🧔</span>
+        <div class="cat-img" style="background-image:url('hombre.jpg')"></div>
+        <div class="cat-overlay"></div>
         <p class="cat-name">Perfumes Hombre</p>
         <div class="cat-border-bottom"></div>
       </div>
       <div class="cat-card reveal reveal-delay-2">
-        <span class="cat-icon">💐</span>
+        <div class="cat-img" style="background-image:url('mujer.jpg')"></div>
+        <div class="cat-overlay"></div>
         <p class="cat-name">Perfumes Mujer</p>
         <div class="cat-border-bottom"></div>
       </div>
       <div class="cat-card reveal reveal-delay-3">
-        <span class="cat-icon">🧪</span>
+        <div class="cat-img" style="background-image:url('decants.jpg')"></div>
+        <div class="cat-overlay"></div>
         <p class="cat-name">Decants</p>
         <div class="cat-border-bottom"></div>
       </div>
       <div class="cat-card reveal reveal-delay-4">
-        <span class="cat-icon">🎁</span>
+        <div class="cat-img" style="background-image:url('regalo.jpg')"></div>
+        <div class="cat-overlay"></div>
         <p class="cat-name">Regalos</p>
         <div class="cat-border-bottom"></div>
       </div>
@@ -1070,8 +1085,9 @@
 </section>
 
 <!-- SOLICITUD -->
-<section id="solicitud">
-  <div class="container">
+<section id="solicitud" style="position:relative;">
+  <div style="position:absolute;inset:0;background:url('solicitud.jpg') center/cover no-repeat;opacity:0.06;pointer-events:none;z-index:0;"></div>
+  <div class="container" style="position:relative;z-index:1;">
     <div class="solicitud-inner">
       <div class="solicitud-left reveal">
         <span class="eyebrow">Búsqueda Personalizada</span>
@@ -1116,37 +1132,55 @@
       <h2 class="section-title">Lo que dicen de nosotros</h2>
       <div class="gold-line centered"></div>
     </div>
-    <div class="testimonios-grid">
-      <div class="testi-card reveal reveal-delay-1">
-        <div class="stars">★★★★★</div>
-        <p class="testi-text">Pedí un Creed Aventus que no encontraba en ningún lado y lo consiguieron en menos de una semana. El decant que probé primero fue perfecto. 100% recomendado.</p>
-        <div class="testi-author">
-          <div class="testi-avatar">RG</div>
-          <div>
-            <p class="testi-name">Ricardo G.</p>
-            <p class="testi-loc">Chihuahua, Chih.</p>
-          </div>
+    <div class="testimonios-layout">
+      <!-- VIDEO -->
+      <div class="testi-video reveal reveal-delay-1">
+        <div class="video-label">
+          <span class="eyebrow" style="margin:0;">Nuestros productos</span>
+        </div>
+        <div class="video-wrap">
+          <iframe
+            src="https://www.youtube.com/embed/ZIudqoLoZOU?autoplay=0&rel=0&modestbranding=1"
+            title="NOVAKINGS PARFUMS"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
         </div>
       </div>
-      <div class="testi-card reveal reveal-delay-2">
-        <div class="stars">★★★★★</div>
-        <p class="testi-text">La atención es excepcional. Me explicaron cada fragancia antes de decidirme. Compré 3 decants y ya sé cuál quiero completo. ¡Excelente servicio!</p>
-        <div class="testi-author">
-          <div class="testi-avatar">SM</div>
-          <div>
-            <p class="testi-name">Sofía M.</p>
-            <p class="testi-loc">Chihuahua, Chih.</p>
+      <!-- TESTIMONIOS -->
+      <div class="testi-cards-col">
+        <div class="testi-card reveal reveal-delay-2">
+          <div class="stars">★★★★★</div>
+          <p class="testi-text">Pedí un Creed Aventus que no encontraba en ningún lado y lo consiguieron en menos de una semana. El decant que probé primero fue perfecto. 100% recomendado.</p>
+          <div class="testi-author">
+            <div class="testi-avatar">RG</div>
+            <div>
+              <p class="testi-name">Ricardo G.</p>
+              <p class="testi-loc">Chihuahua, Chih.</p>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="testi-card reveal reveal-delay-3">
-        <div class="stars">★★★★★</div>
-        <p class="testi-text">Compré el Khamrah y llegó perfectamente empacado, con envío gratuito. Los precios son muy competitivos y la calidad es inmejorable. ¡Totalmente originales!</p>
-        <div class="testi-author">
-          <div class="testi-avatar">JL</div>
-          <div>
-            <p class="testi-name">Jorge L.</p>
-            <p class="testi-loc">Chihuahua, Chih.</p>
+        <div class="testi-card reveal reveal-delay-3">
+          <div class="stars">★★★★★</div>
+          <p class="testi-text">La atención es excepcional. Me explicaron cada fragancia antes de decidirme. Compré 3 decants y ya sé cuál quiero completo. ¡Excelente servicio!</p>
+          <div class="testi-author">
+            <div class="testi-avatar">SM</div>
+            <div>
+              <p class="testi-name">Sofía M.</p>
+              <p class="testi-loc">Chihuahua, Chih.</p>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card reveal reveal-delay-4">
+          <div class="stars">★★★★★</div>
+          <p class="testi-text">Compré el Khamrah perfectamente empacado, con envío gratuito. Precios competitivos y calidad inmejorable. ¡Totalmente originales!</p>
+          <div class="testi-author">
+            <div class="testi-avatar">JL</div>
+            <div>
+              <p class="testi-name">Jorge L.</p>
+              <p class="testi-loc">Chihuahua, Chih.</p>
+            </div>
           </div>
         </div>
       </div>
